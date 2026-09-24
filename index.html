@@ -79,12 +79,36 @@
         </header>
 
         <main id="main">
-          <section id="landing" class="landing" aria-labelledby="hero-title">
+          <section id="gate" class="landing gate" aria-labelledby="gate-title">
             <p class="season">Winter session · JKBOSE 10 / 11 / 12</p>
-            <h1 id="hero-title">AQIBS WEB2 — notes that last the winter.</h1>
+            <h1 id="gate-title">Write your full name first.</h1>
             <p class="lede">
-              Chapter notes, board papers and textbooks arranged the way the
-              exam asks for them. Pick your class. Stay on this page.
+              The desk opens only after we know who is studying. Then pick
+              class, subject, and the official notes, papers or books.
+            </p>
+            <form id="name-form" class="name-form">
+              <label for="full-name">Full name</label>
+              <input
+                id="full-name"
+                name="fullName"
+                type="text"
+                autocomplete="name"
+                required
+                minlength="3"
+                maxlength="80"
+                placeholder="e.g. Aqib Ali"
+              />
+              <p id="name-error" class="form-error" hidden>Write your first and last name.</p>
+              <button class="btn primary" type="submit">Open the study desk</button>
+            </form>
+          </section>
+
+          <section id="landing" class="landing" hidden aria-labelledby="hero-title">
+            <p class="season" id="welcome-line">Choose your class</p>
+            <h1 id="hero-title">Which class are you in?</h1>
+            <p class="lede">
+              Official NCERT chapter PDFs for JKBOSE, plus the JKBOSE papers
+              portal. Pick a class, then a subject.
             </p>
 
             <div class="class-grid" role="list">
@@ -112,9 +136,14 @@
                 <a href="#/">Home</a>
                 <span id="crumb-path"></span>
               </nav>
-              <button class="text-btn" type="button" id="change-class">
-                Change class
-              </button>
+              <div class="desk-actions">
+                <button class="text-btn" type="button" id="change-class">
+                  Change class
+                </button>
+                <button class="text-btn" type="button" id="change-student">
+                  Change name
+                </button>
+              </div>
             </div>
 
             <div id="stream-row" class="stream-row" hidden>

@@ -1,13 +1,17 @@
 (() => {
+  const NAME_KEY = "aqibs-web2-student";
+
   const state = {
+    student: localStorage.getItem(NAME_KEY) || "",
     classId: null,
     stream: null,
     category: "notes",
-    subject: "all",
+    subject: null,
     query: "",
   };
 
   const els = {
+    gate: document.getElementById("gate"),
     landing: document.getElementById("landing"),
     desk: document.getElementById("desk"),
     crumbPath: document.getElementById("crumb-path"),
@@ -17,22 +21,42 @@
     results: document.getElementById("results"),
     search: document.getElementById("search"),
     toast: document.getElementById("toast"),
+    nameForm: document.getElementById("name-form"),
+    fullName: document.getElementById("full-name"),
+    nameError: document.getElementById("name-error"),
+    welcome: document.getElementById("welcome-line"),
   };
 
   let toastTimer;
 
+  function isFullName(value) {
+    const parts = value.trim().split(/\s+/).filter((part) => /[\p{L}]/u.test(part));
+    return parts.length >= 2 && value.trim().length >= 5;
+  }
+
   function parseHash() {
     const raw = location.hash.replace(/^#\/?/, "");
-    const [classId, stream] = raw.split("/").filter(Boolean);
-    return { classId: classId || null, stream: stream || null };
+    const [classId, stream, subject] = raw.split("/").filter(Boolean);
+    return {
+      classId: classId || null,
+      stream: stream || null,
+      subject: subject || null,
+    };
   }
 
   function setHash() {
-    if (!state.classId) {
+    if (!state.student) {
       history.replaceState(null, "", "#/");
       return;
     }
-    const path = state.stream ? `#/${state.classId}/${state.stream}` : `#/${state.classId}`;
+    if (!state.classId) {
+      history.replaceState(null, "", "#/class");
+      return;
+    }
+    const parts = [state.classId];
+    if (state.stream) parts.push(state.stream);
+    if (state.subject) parts.push(state.subject);
+    const path = `#/${parts.join("/")}`;
     if (location.hash !== path) history.replaceState(null, "", path);
   }
 
@@ -67,12 +91,10 @@
 
   function filteredItems() {
     const data = klass();
-    if (!data) return [];
+    if (!data || !state.subject) return [];
     const subjects = visibleSubjects();
-    const allowed = new Set(subjects.map((s) => s.id));
     return (data[state.category] || []).filter((item) => {
-      if (!allowed.has(item.subject)) return false;
-      if (state.subject !== "all" && item.subject !== state.subject) return false;
+      if (item.subject !== state.subject) return false;
       const subj = subjects.find((s) => s.id === item.subject);
       return matchesQuery(item, subj || { name: item.subject });
     });
@@ -87,16 +109,12 @@
     }, 2800);
   }
 
-  function openResource(url, action) {
+  function openResource(url) {
     if (url) {
       window.open(url, "_blank", "noopener");
       return;
     }
-    showToast(
-      action === "download"
-        ? "PDF not attached yet. Drop a link on this item in data.js."
-        : "Online view is empty until a PDF URL is added in data.js."
-    );
+    showToast("This file is not attached yet.");
   }
 
   function renderCrumbs() {
@@ -106,9 +124,11 @@
       return;
     }
     const stream = data.streams?.find((s) => s.id === state.stream);
-    els.crumbPath.innerHTML = stream
-      ? `/ ${data.label} / ${stream.name}`
-      : `/ ${data.label}`;
+    const subject = state.subject ? subjectName(state.subject) : null;
+    const bits = [data.label];
+    if (stream) bits.push(stream.name);
+    if (subject) bits.push(subject);
+    els.crumbPath.textContent = `/ ${bits.join(" / ")}`;
   }
 
   function renderStreams() {
@@ -135,11 +155,11 @@
 
   function renderSubjects() {
     const subjects = visibleSubjects();
-    const chips = [
-      { id: "all", name: "All subjects" },
-      ...subjects,
-    ];
-    els.subjectRow.innerHTML = chips
+    if (!state.subject) {
+      els.subjectRow.innerHTML = "";
+      return;
+    }
+    els.subjectRow.innerHTML = subjects
       .map(
         (subject) => `
         <button
@@ -153,71 +173,100 @@
   }
 
   function itemMeta(item) {
-    if (state.category === "notes") return `Chapter ${item.chapter}`;
+    if (state.category === "notes") return `Chapter ${item.chapter} · official PDF`;
     if (state.category === "papers") return `${item.kind} · ${item.year}`;
-    return item.kind;
+    return `${item.kind} · official book`;
+  }
+
+  function renderSubjectPicker() {
+    const subjects = visibleSubjects();
+    els.results.innerHTML = `
+      <div class="empty">
+        <p>Select your subject. Notes, papers and books open only after that.</p>
+        <div class="subject-grid">
+          ${subjects
+            .map(
+              (subject) => `
+              <button type="button" class="subject-tile" data-subject="${subject.id}">
+                ${subject.name}
+              </button>`
+            )
+            .join("")}
+        </div>
+      </div>`;
   }
 
   function renderResults() {
+    if (!state.subject) {
+      renderSubjectPicker();
+      return;
+    }
+
     const items = filteredItems();
     if (!items.length) {
       els.results.innerHTML = `
         <div class="empty">
-          <p>Nothing matches that search in this class. Try another subject or clear the box.</p>
+          <p>Nothing matches that search in ${subjectName(state.subject)}. Try another word or open Books.</p>
         </div>`;
       return;
     }
 
-    const groups = new Map();
-    items.forEach((item) => {
-      if (!groups.has(item.subject)) groups.set(item.subject, []);
-      groups.get(item.subject).push(item);
-    });
-
-    els.results.innerHTML = [...groups.entries()]
-      .map(([subjectId, group]) => {
-        const rows = group
-          .map(
-            (item) => `
-            <li class="item">
-              <div>
-                <p class="item-kicker">${itemMeta(item)}</p>
-                <p class="item-title">${item.title}</p>
-              </div>
-              <div class="item-actions">
-                <button type="button" class="btn" data-action="view" data-url="${item.viewUrl || ""}">View online</button>
-                <button type="button" class="btn primary" data-action="download" data-url="${item.downloadUrl || ""}">Download PDF</button>
-              </div>
-            </li>`
-          )
-          .join("");
-        return `
-          <section class="subject-block">
-            <h2>${subjectName(subjectId)}</h2>
-            <ul class="item-list">${rows}</ul>
-          </section>`;
-      })
+    const rows = items
+      .map(
+        (item) => `
+        <li class="item">
+          <div>
+            <p class="item-kicker">${itemMeta(item)}</p>
+            <p class="item-title">${item.title}</p>
+          </div>
+          <div class="item-actions">
+            <button type="button" class="btn" data-action="view" data-url="${item.viewUrl || ""}">View online</button>
+            <button type="button" class="btn primary" data-action="download" data-url="${item.downloadUrl || ""}">Download PDF</button>
+          </div>
+        </li>`
+      )
       .join("");
+
+    els.results.innerHTML = `
+      <section class="subject-block">
+        <h2>${subjectName(state.subject)}</h2>
+        <ul class="item-list">${rows}</ul>
+      </section>`;
   }
 
   function render() {
+    if (!state.student) {
+      els.gate.hidden = false;
+      els.landing.hidden = true;
+      els.desk.hidden = true;
+      document.title = "AQIBS WEB2 — write your name";
+      setHash();
+      return;
+    }
+
     const data = klass();
     if (!data) {
+      els.gate.hidden = true;
       els.landing.hidden = false;
       els.desk.hidden = true;
-      document.title = "AQIBS WEB2 — JKBOSE Study Portal";
+      els.welcome.textContent = `Welcome, ${state.student}. Choose your class.`;
+      document.title = "AQIBS WEB2 — choose class";
+      setHash();
       return;
     }
 
     if (data.streams && !state.stream) state.stream = data.streams[0].id;
     if (!data.streams) state.stream = null;
-    if (state.subject !== "all" && !visibleSubjects().some((s) => s.id === state.subject)) {
-      state.subject = "all";
+    if (state.subject && !visibleSubjects().some((s) => s.id === state.subject)) {
+      state.subject = null;
     }
 
+    els.gate.hidden = true;
     els.landing.hidden = true;
     els.desk.hidden = false;
-    document.title = `${data.label} — AQIBS WEB2`;
+    document.title = state.subject
+      ? `${subjectName(state.subject)} · ${data.label} — AQIBS WEB2`
+      : `${data.label} — AQIBS WEB2`;
     renderCrumbs();
     renderStreams();
     renderSubjects();
@@ -226,21 +275,55 @@
   }
 
   function applyRoute() {
+    if (!state.student) {
+      render();
+      return;
+    }
     const route = parseHash();
+    if (route.classId === "class") {
+      state.classId = null;
+      state.stream = null;
+      state.subject = null;
+      render();
+      return;
+    }
     state.classId = STUDY_DATA[route.classId] ? route.classId : null;
-    state.stream = route.stream || null;
-    state.subject = "all";
+    const data = klass();
+    if (data?.streams?.some((s) => s.id === route.stream)) {
+      state.stream = route.stream;
+      state.subject = route.subject || null;
+    } else if (data && !data.streams) {
+      state.stream = null;
+      state.subject = route.stream || null;
+    } else {
+      state.stream = null;
+      state.subject = null;
+    }
     state.query = "";
     els.search.value = "";
     render();
   }
+
+  els.nameForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const value = els.fullName.value.trim().replace(/\s+/g, " ");
+    if (!isFullName(value)) {
+      els.nameError.hidden = false;
+      els.fullName.focus();
+      return;
+    }
+    els.nameError.hidden = true;
+    state.student = value;
+    localStorage.setItem(NAME_KEY, value);
+    render();
+  });
 
   document.querySelectorAll("[data-class]").forEach((btn) => {
     btn.addEventListener("click", () => {
       state.classId = btn.dataset.class;
       state.stream = null;
       state.category = "notes";
-      state.subject = "all";
+      state.subject = null;
       state.query = "";
       els.search.value = "";
       document.querySelectorAll(".tabs [role='tab']").forEach((tab) => {
@@ -254,24 +337,50 @@
   document.getElementById("change-class").addEventListener("click", () => {
     state.classId = null;
     state.stream = null;
-    setHash();
+    state.subject = null;
     render();
     window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+
+  document.getElementById("change-student").addEventListener("click", () => {
+    localStorage.removeItem(NAME_KEY);
+    state.student = "";
+    state.classId = null;
+    state.stream = null;
+    state.subject = null;
+    els.fullName.value = "";
+    render();
+    els.fullName.focus();
   });
 
   els.streamChips.addEventListener("click", (event) => {
     const btn = event.target.closest("[data-stream]");
     if (!btn) return;
     state.stream = btn.dataset.stream;
-    state.subject = "all";
+    state.subject = null;
     render();
   });
+
+  function pickSubject(id) {
+    state.subject = id;
+    render();
+  }
 
   els.subjectRow.addEventListener("click", (event) => {
     const btn = event.target.closest("[data-subject]");
     if (!btn) return;
-    state.subject = btn.dataset.subject;
-    render();
+    pickSubject(btn.dataset.subject);
+  });
+
+  els.results.addEventListener("click", (event) => {
+    const subjectBtn = event.target.closest("[data-subject]");
+    if (subjectBtn) {
+      pickSubject(subjectBtn.dataset.subject);
+      return;
+    }
+    const btn = event.target.closest("[data-action]");
+    if (!btn) return;
+    openResource(btn.dataset.url);
   });
 
   document.querySelector(".tabs").addEventListener("click", (event) => {
@@ -287,12 +396,6 @@
   els.search.addEventListener("input", () => {
     state.query = els.search.value;
     renderResults();
-  });
-
-  els.results.addEventListener("click", (event) => {
-    const btn = event.target.closest("[data-action]");
-    if (!btn) return;
-    openResource(btn.dataset.url, btn.dataset.action);
   });
 
   window.addEventListener("hashchange", applyRoute);
