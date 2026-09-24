@@ -1,4 +1,4 @@
-# AQIB' WEB 2
+# AQIBS WEB2
 
 JKBOSE study portal for Class 10th, 11th and 12th — chapter notes, previous year papers, and textbooks.
 
@@ -39,7 +39,7 @@ Empty URLs keep the buttons working: they show a short on-page notice instead of
 ```bash
 git init
 git add .
-git commit -m "Publish AQIB WEB 2 JKBOSE study portal"
+git commit -m "Publish AQIBS WEB2 JKBOSE study portal"
 git branch -M main
 git remote add origin https://github.com/YOUR_USERNAME/aqib-web-2.git
 git push -u origin main

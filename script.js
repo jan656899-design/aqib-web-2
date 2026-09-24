@@ -205,7 +205,7 @@
     if (!data) {
       els.landing.hidden = false;
       els.desk.hidden = true;
-      document.title = "AQIB' WEB 2 — JKBOSE Study Portal";
+      document.title = "AQIBS WEB2 — JKBOSE Study Portal";
       return;
     }
 
@@ -217,7 +217,7 @@
 
     els.landing.hidden = true;
     els.desk.hidden = false;
-    document.title = `${data.label} — AQIB' WEB 2`;
+    document.title = `${data.label} — AQIBS WEB2`;
     renderCrumbs();
     renderStreams();
     renderSubjects();

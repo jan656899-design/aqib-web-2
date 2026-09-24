@@ -1,4 +1,4 @@
-/* AQIB' WEB 2 — study catalogue
+/* AQIBS WEB2 — study catalogue
    Swap viewUrl / downloadUrl on any item with a real PDF later.
    Structure:
      STUDY_DATA[classId].streams?  → 11/12 only
