@@ -58,6 +58,18 @@ Replace `YOUR_USERNAME` with your GitHub username.
 
 If GitHub Pages asks for a custom 404, you do not need one — this app is a single `index.html`.
 
+## Google search
+
+The live site is already public. Google still needs a few days to list a new site.
+
+1. Open [Google Search Console](https://search.google.com/search-console).
+2. Add property: `https://jan656899-design.github.io/aqib-web-2/`
+3. Use the HTML-file method. The file `google3ce6725d59e34104.html` is already on the live site.
+4. After it verifies, open **URL Inspection**, paste `https://jan656899-design.github.io/aqib-web-2/`, then click **Request indexing**.
+5. Also submit `https://jan656899-design.github.io/aqib-web-2/sitemap.xml`.
+
+Until Google finishes, anyone can still open the site with the live link. Searching `AQIBS WEB2` may take a few days.
+
 ## Credit
 
 Developed by Aqib Ali, Sheikh Wadi Pora.
