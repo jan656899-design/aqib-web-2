@@ -151,6 +151,18 @@
               <div id="stream-chips" class="chip-row" role="tablist" aria-labelledby="stream-label"></div>
             </div>
 
+            <div class="tabs" role="tablist" aria-label="Resource type">
+              <button type="button" role="tab" id="tab-notes" data-cat="notes" aria-selected="true">
+                Notes
+              </button>
+              <button type="button" role="tab" id="tab-papers" data-cat="papers" aria-selected="false">
+                Papers
+              </button>
+              <button type="button" role="tab" id="tab-books" data-cat="books" aria-selected="false">
+                Books
+              </button>
+            </div>
+
             <div class="toolbar">
               <label class="search-wrap">
                 <span class="visually-hidden">Search subjects or chapters</span>
@@ -161,17 +173,6 @@
                   autocomplete="off"
                 />
               </label>
-              <div class="tabs" role="tablist" aria-label="Resource type">
-                <button type="button" role="tab" id="tab-notes" data-cat="notes" aria-selected="true">
-                  Notes
-                </button>
-                <button type="button" role="tab" id="tab-papers" data-cat="papers" aria-selected="false">
-                  Papers
-                </button>
-                <button type="button" role="tab" id="tab-books" data-cat="books" aria-selected="false">
-                  Books
-                </button>
-              </div>
             </div>
 
             <div id="subject-row" class="chip-row subject-row" aria-label="Filter by subject"></div>

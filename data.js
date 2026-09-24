@@ -69,7 +69,11 @@ const STUDY_DATA = {
       { id: "10-sci-ex", subject: "sci", title: "Science — official chapter papers", year: "NCERT", kind: "Chapter papers", viewUrl: `${NCERT_READ}jesc1=1-13`, downloadUrl: `${NCERT}jesc101.pdf` },
       { id: "10-sst-ex", subject: "sst", title: "Social Science History — official papers", year: "NCERT", kind: "Chapter papers", viewUrl: `${NCERT_READ}jess1=1-5`, downloadUrl: `${NCERT}jess101.pdf` },
       { id: "10-hin-ex", subject: "hin", title: "Hindi क्षितिज — official papers", year: "NCERT", kind: "Chapter papers", viewUrl: `${NCERT_READ}jhks1=1-17`, downloadUrl: `${NCERT}jhks101.pdf` },
-      { id: "10-jkbose", subject: "sci", title: "JKBOSE previous / model papers portal", year: "JKBOSE", kind: "Board papers", viewUrl: JKBOSE_PAPERS, downloadUrl: JKBOSE_PAPERS },
+      { id: "10-eng-jkbose", subject: "eng", title: "JKBOSE previous / model papers portal", year: "JKBOSE", kind: "Board papers", viewUrl: JKBOSE_PAPERS, downloadUrl: JKBOSE_PAPERS },
+      { id: "10-math-jkbose", subject: "math", title: "JKBOSE previous / model papers portal", year: "JKBOSE", kind: "Board papers", viewUrl: JKBOSE_PAPERS, downloadUrl: JKBOSE_PAPERS },
+      { id: "10-sci-jkbose", subject: "sci", title: "JKBOSE previous / model papers portal", year: "JKBOSE", kind: "Board papers", viewUrl: JKBOSE_PAPERS, downloadUrl: JKBOSE_PAPERS },
+      { id: "10-sst-jkbose", subject: "sst", title: "JKBOSE previous / model papers portal", year: "JKBOSE", kind: "Board papers", viewUrl: JKBOSE_PAPERS, downloadUrl: JKBOSE_PAPERS },
+      { id: "10-hin-jkbose", subject: "hin", title: "JKBOSE previous / model papers portal", year: "JKBOSE", kind: "Board papers", viewUrl: JKBOSE_PAPERS, downloadUrl: JKBOSE_PAPERS },
     ],
     books: [
       { id: "10-eng-tb", subject: "eng", title: "First Flight", kind: "Textbook", ...ncertBook("jeff1=0-11", "jeff101") },

@@ -93,10 +93,11 @@
     const data = klass();
     if (!data || !state.subject) return [];
     const subjects = visibleSubjects();
-    return (data[state.category] || []).filter((item) => {
+    const bucket = data[state.category] || [];
+    return bucket.filter((item) => {
       if (item.subject !== state.subject) return false;
-      const subj = subjects.find((s) => s.id === item.subject);
-      return matchesQuery(item, subj || { name: item.subject });
+      const subj = subjects.find((s) => s.id === item.subject) || { name: subjectName(item.subject) };
+      return matchesQuery(item, subj);
     });
   }
 
@@ -180,6 +181,9 @@
 
   function renderSubjectPicker() {
     const subjects = visibleSubjects();
+    document.getElementById("tab-notes").textContent = "Notes";
+    document.getElementById("tab-papers").textContent = "Papers";
+    document.getElementById("tab-books").textContent = "Books";
     els.results.innerHTML = `
       <div class="empty">
         <p>Select your subject. Notes, papers and books open only after that.</p>
@@ -203,10 +207,20 @@
     }
 
     const items = filteredItems();
+    const counts = {
+      notes: (klass()?.notes || []).filter((item) => item.subject === state.subject).length,
+      papers: (klass()?.papers || []).filter((item) => item.subject === state.subject).length,
+      books: (klass()?.books || []).filter((item) => item.subject === state.subject).length,
+    };
+    document.getElementById("tab-notes").textContent = `Notes (${counts.notes})`;
+    document.getElementById("tab-papers").textContent = `Papers (${counts.papers})`;
+    document.getElementById("tab-books").textContent = `Books (${counts.books})`;
+
     if (!items.length) {
+      const label = state.category === "notes" ? "notes" : state.category === "papers" ? "papers" : "books";
       els.results.innerHTML = `
         <div class="empty">
-          <p>Nothing matches that search in ${subjectName(state.subject)}. Try another word or open Books.</p>
+          <p>No ${label} match that search in ${subjectName(state.subject)}. Clear the search box, or open another tab.</p>
         </div>`;
       return;
     }
@@ -299,8 +313,8 @@
       state.stream = null;
       state.subject = null;
     }
+    if (els.search) els.search.value = "";
     state.query = "";
-    els.search.value = "";
     render();
   }
 
@@ -386,11 +400,15 @@
   document.querySelector(".tabs").addEventListener("click", (event) => {
     const tab = event.target.closest("[data-cat]");
     if (!tab) return;
+    event.preventDefault();
     state.category = tab.dataset.cat;
+    state.query = "";
+    if (els.search) els.search.value = "";
     document.querySelectorAll(".tabs [role='tab']").forEach((el) => {
-      el.setAttribute("aria-selected", el === tab);
+      el.setAttribute("aria-selected", String(el === tab));
     });
-    render();
+    renderResults();
+    renderCrumbs();
   });
 
   els.search.addEventListener("input", () => {
