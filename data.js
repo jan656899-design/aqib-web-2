@@ -1,14 +1,20 @@
 /* AQIBS WEB2 — JKBOSE study catalogue
    Notes = official NCERT chapter PDFs (JKBOSE follows this syllabus)
    Books = official NCERT textbook readers
-   Papers = official NCERT exemplar / sample paper readers + JKBOSE portal
+   Papers = official JKBOSE model test papers (archived PDFs from jkbose.nic.in)
 */
 const NCERT = "https://ncert.nic.in/textbook/pdf/";
 const NCERT_READ = "https://ncert.nic.in/textbook.php?";
-const JKBOSE_PAPERS = "https://jkbose.nic.in/";
+const JKBOSE_PDF = "https://web.archive.org/web/20250201163152/https://jkbose.nic.in/pdf/";
+const JKBOSE_QB = "https://web.archive.org/web/20250424182817/https://jkbose.nic.in/pdf/";
 
 function ncert(code) {
   const pdf = `${NCERT}${code}.pdf`;
+  return { viewUrl: pdf, downloadUrl: pdf };
+}
+
+function jkbosePaper(file, fromQuestionBank = false) {
+  const pdf = `${fromQuestionBank ? JKBOSE_QB : JKBOSE_PDF}${encodeURI(file)}`;
   return { viewUrl: pdf, downloadUrl: pdf };
 }
 
@@ -64,16 +70,15 @@ const STUDY_DATA = {
       { id: "10-hin-2", subject: "hin", chapter: "2", title: "तुलसीदास", ...ncert("jhks102") },
     ],
     papers: [
-      { id: "10-eng-ex", subject: "eng", title: "English First Flight — official reader", year: "NCERT", kind: "Chapter papers", viewUrl: `${NCERT_READ}jeff1=1-11`, downloadUrl: `${NCERT}jeff101.pdf` },
-      { id: "10-math-ex", subject: "math", title: "Mathematics — official chapter papers", year: "NCERT", kind: "Chapter papers", viewUrl: `${NCERT_READ}jemh1=1-15`, downloadUrl: `${NCERT}jemh101.pdf` },
-      { id: "10-sci-ex", subject: "sci", title: "Science — official chapter papers", year: "NCERT", kind: "Chapter papers", viewUrl: `${NCERT_READ}jesc1=1-13`, downloadUrl: `${NCERT}jesc101.pdf` },
-      { id: "10-sst-ex", subject: "sst", title: "Social Science History — official papers", year: "NCERT", kind: "Chapter papers", viewUrl: `${NCERT_READ}jess1=1-5`, downloadUrl: `${NCERT}jess101.pdf` },
-      { id: "10-hin-ex", subject: "hin", title: "Hindi क्षितिज — official papers", year: "NCERT", kind: "Chapter papers", viewUrl: `${NCERT_READ}jhks1=1-17`, downloadUrl: `${NCERT}jhks101.pdf` },
-      { id: "10-eng-jkbose", subject: "eng", title: "JKBOSE previous / model papers portal", year: "JKBOSE", kind: "Board papers", viewUrl: JKBOSE_PAPERS, downloadUrl: JKBOSE_PAPERS },
-      { id: "10-math-jkbose", subject: "math", title: "JKBOSE previous / model papers portal", year: "JKBOSE", kind: "Board papers", viewUrl: JKBOSE_PAPERS, downloadUrl: JKBOSE_PAPERS },
-      { id: "10-sci-jkbose", subject: "sci", title: "JKBOSE previous / model papers portal", year: "JKBOSE", kind: "Board papers", viewUrl: JKBOSE_PAPERS, downloadUrl: JKBOSE_PAPERS },
-      { id: "10-sst-jkbose", subject: "sst", title: "JKBOSE previous / model papers portal", year: "JKBOSE", kind: "Board papers", viewUrl: JKBOSE_PAPERS, downloadUrl: JKBOSE_PAPERS },
-      { id: "10-hin-jkbose", subject: "hin", title: "JKBOSE previous / model papers portal", year: "JKBOSE", kind: "Board papers", viewUrl: JKBOSE_PAPERS, downloadUrl: JKBOSE_PAPERS },
+      { id: "10-eng-mtp", subject: "eng", title: "English Model Test Paper", year: "JKBOSE", kind: "Model paper", ...jkbosePaper("MTPGenEnglish10th.pdf") },
+      { id: "10-eng-qb", subject: "eng", title: "English Question Bank", year: "JKBOSE", kind: "Question bank", ...jkbosePaper("Question_Bank_of_English_for_Class_10th.pdf", true) },
+      { id: "10-math-mtp", subject: "math", title: "Mathematics Model Test Paper", year: "JKBOSE", kind: "Model paper", ...jkbosePaper("MTP Mathematics 10th.pdf") },
+      { id: "10-sci-mtp", subject: "sci", title: "Science Model Test Paper", year: "JKBOSE", kind: "Model paper", ...jkbosePaper("MTP Science 10th.pdf") },
+      { id: "10-sci-chem", subject: "sci", title: "Chemistry — Chemical Reactions and Equations", year: "JKBOSE", kind: "Question bank", ...jkbosePaper("Chemistry_Class_10th_Chemical_Reactions_and_Equations.pdf", true) },
+      { id: "10-sst-mtp", subject: "sst", title: "Social Science Model Test Paper", year: "JKBOSE", kind: "Model paper", ...jkbosePaper("MTP S. Science 10th.pdf") },
+      { id: "10-sst-qb", subject: "sst", title: "Social Science Question Bank", year: "JKBOSE", kind: "Question bank", ...jkbosePaper("Question_Bank_of_Social_Science_for_Class_10th.pdf", true) },
+      { id: "10-hin-mtp", subject: "hin", title: "Hindi Model Test Paper", year: "JKBOSE", kind: "Model paper", ...jkbosePaper("10-Hindi-Main.pdf") },
+      { id: "10-hin-qb", subject: "hin", title: "Hindi Question Bank", year: "JKBOSE", kind: "Question bank", ...jkbosePaper("Question_Bank_of_Hindi_for_Class_10th.pdf", true) },
     ],
     books: [
       { id: "10-eng-tb", subject: "eng", title: "First Flight", kind: "Textbook", ...ncertBook("jeff1=0-11", "jeff101") },
@@ -135,17 +140,17 @@ const STUDY_DATA = {
       { id: "11-bst-2", subject: "bst", chapter: "2", title: "Forms of Business Organisation", ...ncert("kebs102") },
     ],
     papers: [
-      { id: "11-eng-ex", subject: "eng", title: "Hornbill — official chapter papers", year: "NCERT", kind: "Chapter papers", viewUrl: `${NCERT_READ}kehb1=1-8`, downloadUrl: `${NCERT}kehb101.pdf` },
-      { id: "11-phy-ex", subject: "phy", title: "Physics — official chapter papers", year: "NCERT", kind: "Chapter papers", viewUrl: `${NCERT_READ}keph1=1-7`, downloadUrl: `${NCERT}keph101.pdf` },
-      { id: "11-chem-ex", subject: "chem", title: "Chemistry — official chapter papers", year: "NCERT", kind: "Chapter papers", viewUrl: `${NCERT_READ}kech1=1-6`, downloadUrl: `${NCERT}kech101.pdf` },
-      { id: "11-bio-ex", subject: "bio", title: "Biology — official chapter papers", year: "NCERT", kind: "Chapter papers", viewUrl: `${NCERT_READ}kebo1=1-22`, downloadUrl: `${NCERT}kebo101.pdf` },
-      { id: "11-math-ex", subject: "math", title: "Mathematics — official chapter papers", year: "NCERT", kind: "Chapter papers", viewUrl: `${NCERT_READ}kemh1=1-16`, downloadUrl: `${NCERT}kemh101.pdf` },
-      { id: "11-hist-ex", subject: "hist", title: "History — official chapter papers", year: "NCERT", kind: "Chapter papers", viewUrl: `${NCERT_READ}kehs1=1-11`, downloadUrl: `${NCERT}kehs101.pdf` },
-      { id: "11-pol-ex", subject: "pol", title: "Political Science — official chapter papers", year: "NCERT", kind: "Chapter papers", viewUrl: `${NCERT_READ}keps1=1-10`, downloadUrl: `${NCERT}keps101.pdf` },
-      { id: "11-eco-ex", subject: "eco", title: "Economics — official chapter papers", year: "NCERT", kind: "Chapter papers", viewUrl: `${NCERT_READ}keec1=1-8`, downloadUrl: `${NCERT}keec101.pdf` },
-      { id: "11-acc-ex", subject: "acc", title: "Accountancy — official chapter papers", year: "NCERT", kind: "Chapter papers", viewUrl: `${NCERT_READ}keac1=1-8`, downloadUrl: `${NCERT}keac101.pdf` },
-      { id: "11-bst-ex", subject: "bst", title: "Business Studies — official chapter papers", year: "NCERT", kind: "Chapter papers", viewUrl: `${NCERT_READ}kebs1=1-10`, downloadUrl: `${NCERT}kebs101.pdf` },
-      { id: "11-jkbose", subject: "eng", title: "JKBOSE previous / model papers portal", year: "JKBOSE", kind: "Board papers", viewUrl: JKBOSE_PAPERS, downloadUrl: JKBOSE_PAPERS },
+      { id: "11-eng-mtp", subject: "eng", title: "General English Model Test Paper", year: "JKBOSE", kind: "Model paper", ...jkbosePaper("MPT Gen English 11th.pdf") },
+      { id: "11-phy-mtp", subject: "phy", title: "Physics Model Test Paper", year: "JKBOSE", kind: "Model paper", ...jkbosePaper("MTP Physics 11th.pdf") },
+      { id: "11-chem-mtp", subject: "chem", title: "Chemistry Model Test Paper", year: "JKBOSE", kind: "Model paper", ...jkbosePaper("MTP Chemistry  11th.pdf") },
+      { id: "11-bio-bot", subject: "bio", title: "Botany Model Test Paper", year: "JKBOSE", kind: "Model paper", ...jkbosePaper("MTP Botany 11th.pdf") },
+      { id: "11-bio-zoo", subject: "bio", title: "Zoology Model Test Paper", year: "JKBOSE", kind: "Model paper", ...jkbosePaper("MPT Zoology 11th.pdf") },
+      { id: "11-math-mtp", subject: "math", title: "Mathematics Model Test Paper", year: "JKBOSE", kind: "Model paper", ...jkbosePaper("MPT Maths 11th.pdf") },
+      { id: "11-hist-mtp", subject: "hist", title: "History Model Test Paper", year: "JKBOSE", kind: "Model paper", ...jkbosePaper("MPT History 11th.pdf") },
+      { id: "11-pol-mtp", subject: "pol", title: "Political Science Model Test Paper", year: "JKBOSE", kind: "Model paper", ...jkbosePaper("MPT Political Science 11th.pdf") },
+      { id: "11-eco-mtp", subject: "eco", title: "Economics Model Test Paper", year: "JKBOSE", kind: "Model paper", ...jkbosePaper("MTP Economics 11th.pdf") },
+      { id: "11-acc-mtp", subject: "acc", title: "Accountancy Model Test Paper", year: "JKBOSE", kind: "Model paper", ...jkbosePaper("MTP Accountancy 11th.pdf") },
+      { id: "11-bst-mtp", subject: "bst", title: "Business Studies Model Test Paper", year: "JKBOSE", kind: "Model paper", ...jkbosePaper("MTP Business Studies 11th.pdf") },
     ],
     books: [
       { id: "11-eng-tb", subject: "eng", title: "Hornbill", kind: "Textbook", ...ncertBook("kehb1=0-8", "kehb101") },
@@ -209,17 +214,17 @@ const STUDY_DATA = {
       { id: "12-bst-2", subject: "bst", chapter: "2", title: "Principles of Management", ...ncert("lebs102") },
     ],
     papers: [
-      { id: "12-eng-ex", subject: "eng", title: "Flamingo — official chapter papers", year: "NCERT", kind: "Chapter papers", viewUrl: `${NCERT_READ}lefl1=1-8`, downloadUrl: `${NCERT}lefl101.pdf` },
-      { id: "12-phy-ex", subject: "phy", title: "Physics — official chapter papers", year: "NCERT", kind: "Chapter papers", viewUrl: `${NCERT_READ}leph1=1-8`, downloadUrl: `${NCERT}leph101.pdf` },
-      { id: "12-chem-ex", subject: "chem", title: "Chemistry — official chapter papers", year: "NCERT", kind: "Chapter papers", viewUrl: `${NCERT_READ}lech1=1-5`, downloadUrl: `${NCERT}lech101.pdf` },
-      { id: "12-bio-ex", subject: "bio", title: "Biology — official chapter papers", year: "NCERT", kind: "Chapter papers", viewUrl: `${NCERT_READ}lebo1=1-13`, downloadUrl: `${NCERT}lebo101.pdf` },
-      { id: "12-math-ex", subject: "math", title: "Mathematics — official chapter papers", year: "NCERT", kind: "Chapter papers", viewUrl: `${NCERT_READ}lemh1=1-6`, downloadUrl: `${NCERT}lemh101.pdf` },
-      { id: "12-hist-ex", subject: "hist", title: "History — official chapter papers", year: "NCERT", kind: "Chapter papers", viewUrl: `${NCERT_READ}lehs1=1-4`, downloadUrl: `${NCERT}lehs101.pdf` },
-      { id: "12-pol-ex", subject: "pol", title: "Political Science — official chapter papers", year: "NCERT", kind: "Chapter papers", viewUrl: `${NCERT_READ}leps1=1-7`, downloadUrl: `${NCERT}leps101.pdf` },
-      { id: "12-eco-ex", subject: "eco", title: "Economics — official chapter papers", year: "NCERT", kind: "Chapter papers", viewUrl: `${NCERT_READ}leec1=1-6`, downloadUrl: `${NCERT}leec101.pdf` },
-      { id: "12-acc-ex", subject: "acc", title: "Accountancy — official chapter papers", year: "NCERT", kind: "Chapter papers", viewUrl: `${NCERT_READ}leac1=1-5`, downloadUrl: `${NCERT}leac101.pdf` },
-      { id: "12-bst-ex", subject: "bst", title: "Business Studies — official chapter papers", year: "NCERT", kind: "Chapter papers", viewUrl: `${NCERT_READ}lebs1=1-8`, downloadUrl: `${NCERT}lebs101.pdf` },
-      { id: "12-jkbose", subject: "eng", title: "JKBOSE previous / model papers portal", year: "JKBOSE", kind: "Board papers", viewUrl: JKBOSE_PAPERS, downloadUrl: JKBOSE_PAPERS },
+      { id: "12-eng-mtp", subject: "eng", title: "English Model Test Paper", year: "JKBOSE", kind: "Model paper", ...jkbosePaper("MTP English 12th.pdf") },
+      { id: "12-phy-mtp", subject: "phy", title: "Physics Model Test Paper", year: "JKBOSE", kind: "Model paper", ...jkbosePaper("MTP Physics 12th.pdf") },
+      { id: "12-chem-mtp", subject: "chem", title: "Chemistry Model Test Paper", year: "JKBOSE", kind: "Model paper", ...jkbosePaper("MTP  Chemistry 12th.pdf") },
+      { id: "12-bio-bot", subject: "bio", title: "Botany Model Test Paper", year: "JKBOSE", kind: "Model paper", ...jkbosePaper("MTP Botany 12th.pdf") },
+      { id: "12-bio-zoo", subject: "bio", title: "Zoology Model Test Paper", year: "JKBOSE", kind: "Model paper", ...jkbosePaper("MTP Zoology 12th.pdf") },
+      { id: "12-math-mtp", subject: "math", title: "Mathematics Model Test Paper", year: "JKBOSE", kind: "Model paper", ...jkbosePaper("MTP Mathematics 12th.pdf") },
+      { id: "12-hist-mtp", subject: "hist", title: "History Model Test Paper", year: "JKBOSE", kind: "Model paper", ...jkbosePaper("MTP History 12th.pdf") },
+      { id: "12-pol-mtp", subject: "pol", title: "Political Science Model Test Paper", year: "JKBOSE", kind: "Model paper", ...jkbosePaper("MTP Political Science 12th.pdf") },
+      { id: "12-eco-mtp", subject: "eco", title: "Economics Model Test Paper", year: "JKBOSE", kind: "Model paper", ...jkbosePaper("Model paper Economics 12th.pdf") },
+      { id: "12-acc-mtp", subject: "acc", title: "Accountancy Model Test Paper", year: "JKBOSE", kind: "Model paper", ...jkbosePaper("MTP Accountacy 12th.pdf") },
+      { id: "12-bst-mtp", subject: "bst", title: "Business Studies Model Test Paper", year: "JKBOSE", kind: "Model paper", ...jkbosePaper("MTP Business Studies  12th.pdf") },
     ],
     books: [
       { id: "12-eng-tb", subject: "eng", title: "Flamingo", kind: "Textbook", ...ncertBook("lefl1=0-8", "lefl101") },
