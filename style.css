@@ -30,10 +30,11 @@ body {
   font-size: 1.04rem;
   line-height: 1.58;
   color: var(--ivory);
-  background:
-    radial-gradient(900px 520px at 8% -8%, rgba(176, 28, 48, 0.42), transparent 58%),
-    radial-gradient(720px 420px at 100% 0%, rgba(36, 72, 196, 0.38), transparent 48%),
-    linear-gradient(180deg, #3a0d18 0%, #16081c 46%, #08101f 100%);
+  background-color: #1a0410;
+  background-image:
+    radial-gradient(circle at 0% 0%, #8b1024 0%, transparent 42%),
+    radial-gradient(circle at 100% 0%, #1638b0 0%, transparent 46%),
+    linear-gradient(180deg, #4a0a18 0%, #12061a 50%, #06102a 100%);
   background-attachment: fixed;
 }
 
