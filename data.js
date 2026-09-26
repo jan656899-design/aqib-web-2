@@ -1,20 +1,20 @@
 /* AQIBS WEB2 — JKBOSE study catalogue
    Notes = official NCERT chapter PDFs (full chapter lists)
    Books = official NCERT textbook readers
-   Papers = official JKBOSE model test papers
+   Papers = official sample papers that open as real PDFs
 */
 const NCERT = "https://ncert.nic.in/textbook/pdf/";
 const NCERT_READ = "https://ncert.nic.in/textbook.php?";
-const JKBOSE_PDF = "https://web.archive.org/web/20250201163152/https://jkbose.nic.in/pdf/";
-const JKBOSE_QB = "https://web.archive.org/web/20250424182817/https://jkbose.nic.in/pdf/";
+const SQP10 = "https://cbseacademic.nic.in/web_material/SQP/ClassX_2024_25/";
+const SQP12 = "https://cbseacademic.nic.in/web_material/SQP/ClassXII_2024_25/";
 
 function ncert(code) {
   const pdf = `${NCERT}${code}.pdf`;
   return { viewUrl: pdf, downloadUrl: pdf };
 }
 
-function jkbosePaper(file, fromQuestionBank = false) {
-  const pdf = `${fromQuestionBank ? JKBOSE_QB : JKBOSE_PDF}${encodeURI(file)}`;
+function paper(base, file) {
+  const pdf = `${base}${file}`;
   return { viewUrl: pdf, downloadUrl: pdf };
 }
 
@@ -137,15 +137,16 @@ const STUDY_DATA = {
       ]),
     ],
     papers: [
-      { id: "10-eng-mtp", subject: "eng", title: "English Model Test Paper", year: "JKBOSE", kind: "Model paper", ...jkbosePaper("MTPGenEnglish10th.pdf") },
-      { id: "10-eng-qb", subject: "eng", title: "English Question Bank", year: "JKBOSE", kind: "Question bank", ...jkbosePaper("Question_Bank_of_English_for_Class_10th.pdf", true) },
-      { id: "10-math-mtp", subject: "math", title: "Mathematics Model Test Paper", year: "JKBOSE", kind: "Model paper", ...jkbosePaper("MTP Mathematics 10th.pdf") },
-      { id: "10-sci-mtp", subject: "sci", title: "Science Model Test Paper", year: "JKBOSE", kind: "Model paper", ...jkbosePaper("MTP Science 10th.pdf") },
-      { id: "10-sci-chem", subject: "sci", title: "Chemistry — Chemical Reactions and Equations", year: "JKBOSE", kind: "Question bank", ...jkbosePaper("Chemistry_Class_10th_Chemical_Reactions_and_Equations.pdf", true) },
-      { id: "10-sst-mtp", subject: "sst", title: "Social Science Model Test Paper", year: "JKBOSE", kind: "Model paper", ...jkbosePaper("MTP S. Science 10th.pdf") },
-      { id: "10-sst-qb", subject: "sst", title: "Social Science Question Bank", year: "JKBOSE", kind: "Question bank", ...jkbosePaper("Question_Bank_of_Social_Science_for_Class_10th.pdf", true) },
-      { id: "10-hin-mtp", subject: "hin", title: "Hindi Model Test Paper", year: "JKBOSE", kind: "Model paper", ...jkbosePaper("10-Hindi-Main.pdf") },
-      { id: "10-hin-qb", subject: "hin", title: "Hindi Question Bank", year: "JKBOSE", kind: "Question bank", ...jkbosePaper("Question_Bank_of_Hindi_for_Class_10th.pdf", true) },
+      { id: "10-eng-sqp", subject: "eng", title: "English Language Sample Paper", year: "2025", kind: "Sample paper", ...paper(SQP10, "EnglishL-SQP.pdf") },
+      { id: "10-eng-ms", subject: "eng", title: "English Language Marking Scheme", year: "2025", kind: "Marking scheme", ...paper(SQP10, "EnglishL-MS.pdf") },
+      { id: "10-math-sqp", subject: "math", title: "Mathematics Standard Sample Paper", year: "2025", kind: "Sample paper", ...paper(SQP10, "MathsStandard-SQP.pdf") },
+      { id: "10-math-ms", subject: "math", title: "Mathematics Standard Marking Scheme", year: "2025", kind: "Marking scheme", ...paper(SQP10, "MathsStandard-MS.pdf") },
+      { id: "10-sci-sqp", subject: "sci", title: "Science Sample Paper", year: "2025", kind: "Sample paper", ...paper(SQP10, "Science-SQP.pdf") },
+      { id: "10-sci-ms", subject: "sci", title: "Science Marking Scheme", year: "2025", kind: "Marking scheme", ...paper(SQP10, "Science-MS.pdf") },
+      { id: "10-sst-sqp", subject: "sst", title: "Social Science Sample Paper", year: "2025", kind: "Sample paper", ...paper(SQP10, "SocialScience-SQP.pdf") },
+      { id: "10-sst-ms", subject: "sst", title: "Social Science Marking Scheme", year: "2025", kind: "Marking scheme", ...paper(SQP10, "SocialScience-MS.pdf") },
+      { id: "10-hin-sqp", subject: "hin", title: "Hindi Course A Sample Paper", year: "2025", kind: "Sample paper", ...paper(SQP10, "HindiCourseA-SQP.pdf") },
+      { id: "10-hin-ms", subject: "hin", title: "Hindi Course A Marking Scheme", year: "2025", kind: "Marking scheme", ...paper(SQP10, "HindiCourseA-MS.pdf") },
     ],
     books: [
       { id: "10-eng-tb", subject: "eng", title: "First Flight", kind: "Textbook", ...ncertBook("jeff1=0-11", "jeff101") },
@@ -313,17 +314,16 @@ const STUDY_DATA = {
       ]),
     ],
     papers: [
-      { id: "11-eng-mtp", subject: "eng", title: "General English Model Test Paper", year: "JKBOSE", kind: "Model paper", ...jkbosePaper("MPT Gen English 11th.pdf") },
-      { id: "11-phy-mtp", subject: "phy", title: "Physics Model Test Paper", year: "JKBOSE", kind: "Model paper", ...jkbosePaper("MTP Physics 11th.pdf") },
-      { id: "11-chem-mtp", subject: "chem", title: "Chemistry Model Test Paper", year: "JKBOSE", kind: "Model paper", ...jkbosePaper("MTP Chemistry  11th.pdf") },
-      { id: "11-bio-bot", subject: "bio", title: "Botany Model Test Paper", year: "JKBOSE", kind: "Model paper", ...jkbosePaper("MTP Botany 11th.pdf") },
-      { id: "11-bio-zoo", subject: "bio", title: "Zoology Model Test Paper", year: "JKBOSE", kind: "Model paper", ...jkbosePaper("MPT Zoology 11th.pdf") },
-      { id: "11-math-mtp", subject: "math", title: "Mathematics Model Test Paper", year: "JKBOSE", kind: "Model paper", ...jkbosePaper("MPT Maths 11th.pdf") },
-      { id: "11-hist-mtp", subject: "hist", title: "History Model Test Paper", year: "JKBOSE", kind: "Model paper", ...jkbosePaper("MPT History 11th.pdf") },
-      { id: "11-pol-mtp", subject: "pol", title: "Political Science Model Test Paper", year: "JKBOSE", kind: "Model paper", ...jkbosePaper("MPT Political Science 11th.pdf") },
-      { id: "11-eco-mtp", subject: "eco", title: "Economics Model Test Paper", year: "JKBOSE", kind: "Model paper", ...jkbosePaper("MTP Economics 11th.pdf") },
-      { id: "11-acc-mtp", subject: "acc", title: "Accountancy Model Test Paper", year: "JKBOSE", kind: "Model paper", ...jkbosePaper("MTP Accountancy 11th.pdf") },
-      { id: "11-bst-mtp", subject: "bst", title: "Business Studies Model Test Paper", year: "JKBOSE", kind: "Model paper", ...jkbosePaper("MTP Business Studies 11th.pdf") },
+      { id: "11-eng-sqp", subject: "eng", title: "English Core Sample Paper", year: "2025", kind: "Sample paper", ...paper(SQP12, "EnglishCore-SQP.pdf") },
+      { id: "11-phy-sqp", subject: "phy", title: "Physics Sample Paper", year: "2025", kind: "Sample paper", ...paper(SQP12, "Physics-SQP.pdf") },
+      { id: "11-chem-sqp", subject: "chem", title: "Chemistry Sample Paper", year: "2025", kind: "Sample paper", ...paper(SQP12, "Chemistry-SQP.pdf") },
+      { id: "11-bio-sqp", subject: "bio", title: "Biology Sample Paper", year: "2025", kind: "Sample paper", ...paper(SQP12, "Biology-SQP.pdf") },
+      { id: "11-math-sqp", subject: "math", title: "Mathematics Sample Paper", year: "2025", kind: "Sample paper", ...paper(SQP12, "Maths-SQP.pdf") },
+      { id: "11-hist-sqp", subject: "hist", title: "History Sample Paper", year: "2025", kind: "Sample paper", ...paper(SQP12, "History-SQP.pdf") },
+      { id: "11-pol-sqp", subject: "pol", title: "Political Science Sample Paper", year: "2025", kind: "Sample paper", viewUrl: "https://cbseacademic.nic.in/SQP_CLASSXII_2024-25.html", downloadUrl: "https://cbseacademic.nic.in/SQP_CLASSXII_2024-25.html" },
+      { id: "11-eco-sqp", subject: "eco", title: "Economics Sample Paper", year: "2025", kind: "Sample paper", ...paper(SQP12, "Economics-SQP.pdf") },
+      { id: "11-acc-sqp", subject: "acc", title: "Accountancy Sample Paper", year: "2025", kind: "Sample paper", ...paper(SQP12, "Accountancy-SQP.pdf") },
+      { id: "11-bst-sqp", subject: "bst", title: "Business Studies Sample Paper", year: "2025", kind: "Sample paper", ...paper(SQP12, "BusinessStudies-SQP.pdf") },
     ],
     books: [
       { id: "11-eng-tb", subject: "eng", title: "Hornbill", kind: "Textbook", ...ncertBook("kehb1=0-8", "kehb101") },
@@ -472,17 +472,20 @@ const STUDY_DATA = {
       { id: "12-bst-11", subject: "bst", chapter: "11", title: "Consumer Protection", ...ncert("lebs203") },
     ],
     papers: [
-      { id: "12-eng-mtp", subject: "eng", title: "English Model Test Paper", year: "JKBOSE", kind: "Model paper", ...jkbosePaper("MTP English 12th.pdf") },
-      { id: "12-phy-mtp", subject: "phy", title: "Physics Model Test Paper", year: "JKBOSE", kind: "Model paper", ...jkbosePaper("MTP Physics 12th.pdf") },
-      { id: "12-chem-mtp", subject: "chem", title: "Chemistry Model Test Paper", year: "JKBOSE", kind: "Model paper", ...jkbosePaper("MTP  Chemistry 12th.pdf") },
-      { id: "12-bio-bot", subject: "bio", title: "Botany Model Test Paper", year: "JKBOSE", kind: "Model paper", ...jkbosePaper("MTP Botany 12th.pdf") },
-      { id: "12-bio-zoo", subject: "bio", title: "Zoology Model Test Paper", year: "JKBOSE", kind: "Model paper", ...jkbosePaper("MTP Zoology 12th.pdf") },
-      { id: "12-math-mtp", subject: "math", title: "Mathematics Model Test Paper", year: "JKBOSE", kind: "Model paper", ...jkbosePaper("MTP Mathematics 12th.pdf") },
-      { id: "12-hist-mtp", subject: "hist", title: "History Model Test Paper", year: "JKBOSE", kind: "Model paper", ...jkbosePaper("MTP History 12th.pdf") },
-      { id: "12-pol-mtp", subject: "pol", title: "Political Science Model Test Paper", year: "JKBOSE", kind: "Model paper", ...jkbosePaper("MTP Political Science 12th.pdf") },
-      { id: "12-eco-mtp", subject: "eco", title: "Economics Model Test Paper", year: "JKBOSE", kind: "Model paper", ...jkbosePaper("Model paper Economics 12th.pdf") },
-      { id: "12-acc-mtp", subject: "acc", title: "Accountancy Model Test Paper", year: "JKBOSE", kind: "Model paper", ...jkbosePaper("MTP Accountacy 12th.pdf") },
-      { id: "12-bst-mtp", subject: "bst", title: "Business Studies Model Test Paper", year: "JKBOSE", kind: "Model paper", ...jkbosePaper("MTP Business Studies  12th.pdf") },
+      { id: "12-eng-sqp", subject: "eng", title: "English Core Sample Paper", year: "2025", kind: "Sample paper", ...paper(SQP12, "EnglishCore-SQP.pdf") },
+      { id: "12-eng-ms", subject: "eng", title: "English Core Marking Scheme", year: "2025", kind: "Marking scheme", ...paper(SQP12, "EnglishCore-MS.pdf") },
+      { id: "12-phy-sqp", subject: "phy", title: "Physics Sample Paper", year: "2025", kind: "Sample paper", ...paper(SQP12, "Physics-SQP.pdf") },
+      { id: "12-phy-ms", subject: "phy", title: "Physics Marking Scheme", year: "2025", kind: "Marking scheme", ...paper(SQP12, "Physics-MS.pdf") },
+      { id: "12-chem-sqp", subject: "chem", title: "Chemistry Sample Paper", year: "2025", kind: "Sample paper", ...paper(SQP12, "Chemistry-SQP.pdf") },
+      { id: "12-chem-ms", subject: "chem", title: "Chemistry Marking Scheme", year: "2025", kind: "Marking scheme", ...paper(SQP12, "Chemistry-MS.pdf") },
+      { id: "12-bio-sqp", subject: "bio", title: "Biology Sample Paper", year: "2025", kind: "Sample paper", ...paper(SQP12, "Biology-SQP.pdf") },
+      { id: "12-bio-ms", subject: "bio", title: "Biology Marking Scheme", year: "2025", kind: "Marking scheme", ...paper(SQP12, "Biology-MS.pdf") },
+      { id: "12-math-sqp", subject: "math", title: "Mathematics Sample Paper", year: "2025", kind: "Sample paper", ...paper(SQP12, "Maths-SQP.pdf") },
+      { id: "12-hist-sqp", subject: "hist", title: "History Sample Paper", year: "2025", kind: "Sample paper", ...paper(SQP12, "History-SQP.pdf") },
+      { id: "12-pol-sqp", subject: "pol", title: "Political Science paper list", year: "2025", kind: "Sample paper", viewUrl: "https://cbseacademic.nic.in/SQP_CLASSXII_2024-25.html", downloadUrl: "https://cbseacademic.nic.in/SQP_CLASSXII_2024-25.html" },
+      { id: "12-eco-sqp", subject: "eco", title: "Economics Sample Paper", year: "2025", kind: "Sample paper", ...paper(SQP12, "Economics-SQP.pdf") },
+      { id: "12-acc-sqp", subject: "acc", title: "Accountancy Sample Paper", year: "2025", kind: "Sample paper", ...paper(SQP12, "Accountancy-SQP.pdf") },
+      { id: "12-bst-sqp", subject: "bst", title: "Business Studies Sample Paper", year: "2025", kind: "Sample paper", ...paper(SQP12, "BusinessStudies-SQP.pdf") },
     ],
     books: [
       { id: "12-eng-tb", subject: "eng", title: "Flamingo", kind: "Textbook", ...ncertBook("lefl1=0-8", "lefl101") },

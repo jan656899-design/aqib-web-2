@@ -234,8 +234,8 @@
             <p class="item-title">${item.title}</p>
           </div>
           <div class="item-actions">
-            <button type="button" class="btn" data-action="view" data-url="${item.viewUrl || ""}">View online</button>
-            <button type="button" class="btn primary" data-action="download" data-url="${item.downloadUrl || ""}">Download PDF</button>
+            <a class="btn" href="${item.viewUrl || "#"}" target="_blank" rel="noopener noreferrer">View online</a>
+            <a class="btn primary" href="${item.downloadUrl || item.viewUrl || "#"}" target="_blank" rel="noopener noreferrer">Download PDF</a>
           </div>
         </li>`
       )
